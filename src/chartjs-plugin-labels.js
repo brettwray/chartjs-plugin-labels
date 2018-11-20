@@ -1,4 +1,5 @@
 /**
+ * Forked from the chartjs-plugin-labels plugin
  * [chartjs-plugin-labels]{@link https://github.com/emn178/chartjs-plugin-labels}
  *
  * @version 1.1.0
@@ -235,7 +236,9 @@
         dataset: dataset,
         index: index
       });
-    } else if (typeof fontColor !== 'string') {
+    } else if(fontColor.isArray) {
+      var fontColor = dataset.backgroundColor[index]
+    }else if (typeof fontColor !== 'string') {
       fontColor = fontColor[index] || this.chart.config.options.defaultFontColor;
     }
     return fontColor;
@@ -300,9 +303,10 @@
       if (this.options.position === 'border') {
         rangeFromCentre = (view.outerRadius - innerRadius) / 2 + innerRadius;
       } else if (this.options.position === 'outside') {
-        rangeFromCentre = (view.outerRadius - innerRadius) + innerRadius + this.options.textMargin;
+        rangeFromCentre = chart.outerRadius + this.options.textMargin;
+
       }
-      renderInfo = {
+     renderInfo = {
         x: view.x + (Math.cos(centreAngle) * rangeFromCentre),
         y: view.y + (Math.sin(centreAngle) * rangeFromCentre)
       };
@@ -315,11 +319,12 @@
       return element.tooltipPosition();
     }
   };
-
+  // THIS IS WHERE I MADE CHANGES TO THE PLUGIN - SEE OUTER RADIUS
   Label.prototype.getArcRenderInfo = function (element, label) {
+
     var radius, view = element._view;
     if (this.options.position === 'outside') {
-      radius = view.outerRadius + this.options.fontSize + this.options.textMargin;
+      radius = (element._chart.outerRadius + 20) + this.options.fontSize + this.options.textMargin;
     } else if (this.options.position === 'border') {
       radius = (view.outerRadius / 2 + view.outerRadius) / 2;
     } else {
@@ -431,7 +436,7 @@
   };
 
   Chart.plugins.register({
-    id: 'labels',
+    id: 'labelsReboot',
     beforeDatasetsUpdate: function (chart, options) {
       if (!SUPPORTED_TYPES[chart.config.type]) {
         return;
