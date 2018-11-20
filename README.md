@@ -1,3 +1,6 @@
+# This is a fork of the plugin chartjs-plugin labels -[Demo](http://emn178.github.io/chartjs-plugin-labels/samples/demo/)
+# Changes have been made to allow the label to be anchored to the outside of the polar area chart for a project.
+
 # chartjs-plugin-labels
 Chart.js plugin to display labels on pie, doughnut and polar area chart. Original Chart.PieceLabel.js
 
